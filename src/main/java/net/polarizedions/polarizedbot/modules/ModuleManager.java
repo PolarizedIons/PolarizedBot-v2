@@ -2,8 +2,10 @@ package net.polarizedions.polarizedbot.modules;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import discord4j.core.object.entity.User;
 import net.polarizedions.polarizedbot.config.BotConfig;
 import net.polarizedions.polarizedbot.modules.impl.Ping;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,12 @@ public class ModuleManager {
         }
     }
 
-    public void runMessage(MessageSource source) {
+    public void runMessage(@NotNull MessageSource source) {
+        User user = source.getUser();
+        if (user != null && user.isBot()) {
+            return;
+        }
+
         String botPrefix = BotConfig.get().prefix;
         if (source.getMessage().startsWith(botPrefix)) {
             try {
