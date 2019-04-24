@@ -2,11 +2,13 @@ package net.polarizedions.polarizedbot.modules;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.MessageChannel;
 import discord4j.core.object.entity.User;
 import discord4j.core.spec.EmbedCreateSpec;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MessageSource {
@@ -35,13 +37,14 @@ public class MessageSource {
     }
 
     public void replyEmbed(Consumer<EmbedCreateSpec> specConsumer) {
-        this.message.getChannel().subscribe(channel -> {
-            channel.createEmbed(specConsumer).subscribe();
-        });
+        this.message.getChannel().subscribe(channel -> channel.createEmbed(specConsumer).subscribe());
     }
 
-    @Nullable
-    public User getUser() {
-        return this.message.getAuthor().orElse(null);
+    public Optional<User> getUser() {
+        return this.message.getAuthor();
+    }
+
+    public Mono<MessageChannel> getChannel() {
+        return this.message.getChannel();
     }
 }

@@ -14,6 +14,7 @@ public class BotConfig {
 
     public String discordToken = "";
     public String prefix = "!";
+    public String lang = "en";
 
     public static BotConfig get() {
         if (BotConfig.instance == null) {
