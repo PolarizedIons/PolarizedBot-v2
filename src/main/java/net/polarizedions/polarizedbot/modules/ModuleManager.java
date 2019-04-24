@@ -9,8 +9,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Manages the modules that the bot runs.
+ */
 public class ModuleManager {
     private CommandDispatcher<MessageSource> dispatcher;
     private List<IModule> modules;
@@ -25,6 +27,9 @@ public class ModuleManager {
         this.refreshActiveModules();
     }
 
+    /**
+     * Refresh which modules are considered active by the command dispatcher & the message runners.
+     */
     private void refreshActiveModules() {
         this.dispatcher = new CommandDispatcher<>();
         this.messageRunners.clear();
@@ -45,6 +50,10 @@ public class ModuleManager {
         }
     }
 
+    /**
+     * Run the message through the command dispatcher (if it starts with the command prefix)
+     * @param source
+     */
     public void runMessage(@NotNull MessageSource source) {
         User user = source.getUser().orElse(null);
         if (user != null && user.isBot()) {
