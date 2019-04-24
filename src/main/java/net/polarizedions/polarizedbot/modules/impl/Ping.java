@@ -32,17 +32,12 @@ public class Ping implements IModule {
         int ping(MessageSource source) {
             source.getChannel().subscribe(channel -> {
                 Instant start = Instant.now();
-                System.out.println("Starting " + start);
                 channel.createEmbed(spec -> {
                     spec.setTitle(Language.get("ping.title"));
                     spec.addField(Language.get("ping.ping"), Language.get("ping.pong"), true);
-                    System.out.println("created embed");
                 }).subscribe(msg -> {
-                    System.out.println("subbed received");
                     msg.edit(msgSpec -> {
-                        System.out.println("editing");
                         msgSpec.setEmbed(embedSpec -> {
-                            System.out.println("created embed edit");
                             Instant end = Instant.now();
                             Duration diff = Duration.between(start, end);
 
