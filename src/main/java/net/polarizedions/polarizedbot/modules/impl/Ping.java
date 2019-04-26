@@ -36,7 +36,9 @@ public class Ping implements IModule {
                 channel.createEmbed(spec -> {
                     spec.setTitle(Language.get("ping.title"));
                     spec.addField(Language.get("ping.ping"), Language.get("ping.pong"), true);
+
                     spec.setColor(Colors.NEUTRAL);
+                    spec.setTimestamp(Instant.now());
                 }).subscribe(msg -> {
                     msg.edit(msgSpec -> {
                         msgSpec.setEmbed(embedSpec -> {
@@ -45,7 +47,9 @@ public class Ping implements IModule {
 
                             embedSpec.setTitle(Language.get("ping.title"));
                             embedSpec.addField(Language.get("ping.ping"), Language.get("ping.time", diff.toMillis()), true);
+
                             embedSpec.setColor(Colors.INFO);
+                            embedSpec.setTimestamp(Instant.now());
                         });
                     }).subscribe();
                 });

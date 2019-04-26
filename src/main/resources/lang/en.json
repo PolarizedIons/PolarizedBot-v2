@@ -1,8 +1,25 @@
 {
+    "about": {
+        "title": "About",
+        "name": "Bot Name:",
+        "moduleCount": "Modules:",
+        "moduleCountValue": "%s/%s",
+        "version": "Bot Version:",
+        "uptime": "Uptime:",
+        "buildTime": "Build Time:",
+        "javaVersion": "Java Version:"
+    },
     "ping": {
         "title": "Pong",
         "ping": "Ping",
         "pong": "ponging...",
         "time": "%sms"
+    },
+    "time": {
+        "0": "%s weeks",
+        "1": "%s days",
+        "2": "%s hours",
+        "3": "%s minutes",
+        "4": "%s seconds"
     }
 }

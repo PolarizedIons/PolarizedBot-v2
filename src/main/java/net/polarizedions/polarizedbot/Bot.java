@@ -4,6 +4,8 @@ import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
 import net.polarizedions.polarizedbot.config.BotConfig;
 import net.polarizedions.polarizedbot.modules.ModuleManager;
+import net.polarizedions.polarizedbot.util.BuildInfo;
+import net.polarizedions.polarizedbot.util.Uptime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +15,7 @@ public class Bot {
     public static final Logger logger = LogManager.getLogger("PolarizedBot");
 
     Bot() {
-        logger.info("Starting PolarizedBot v" + "TODO");
+        logger.info("Starting PolarizedBot v" + BuildInfo.version);
         logger.debug("Building client...");
         this.client = new DiscordClientBuilder(BotConfig.get().discordToken).build();
 
@@ -38,6 +40,7 @@ public class Bot {
     }
 
     public static void main(String[] args) {
+        Uptime.start();
         new Bot().run();
     }
 }

@@ -10,7 +10,9 @@ import net.polarizedions.polarizedbot.modules.ICommand;
 import net.polarizedions.polarizedbot.modules.IModule;
 import net.polarizedions.polarizedbot.modules.MessageSource;
 import net.polarizedions.polarizedbot.modules.ModuleManager;
+import net.polarizedions.polarizedbot.util.BuildInfo;
 import net.polarizedions.polarizedbot.util.Colors;
+import net.polarizedions.polarizedbot.util.Uptime;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
@@ -51,13 +53,15 @@ public class About implements IModule {
                 Bot bot = source.getBot();
                 ModuleManager moduleManager = bot.getModuleManager();
                 User ourUser = source.getClient().getSelf().block();
-
+                String javaVersion = System.getProperty("java.version");
 
                 spec.setTitle(Language.get("about.title"));
                 spec.addField(Language.get("about.name"), ourUser.getUsername() + "#" + ourUser.getDiscriminator(), true);
                 spec.addField(Language.get("about.moduleCount"), Language.get("about.moduleCountValue", moduleManager.getActiveModuleCount(), moduleManager.getModuleCount()), true);
-                spec.addField(Language.get("about.version"), "todo", true);
-                spec.addField(Language.get("about.uptime"), "todo", true);
+                spec.addField(Language.get("about.version"), BuildInfo.version, true);
+                spec.addField(Language.get("about.uptime"), Uptime.get(), true);
+                spec.addField(Language.get("about.buildTime"), BuildInfo.buildtime, true);
+                spec.addField(Language.get("about.javaVersion"), javaVersion, true);
 
 
                 spec.setThumbnail(ourUser.getAvatarUrl());

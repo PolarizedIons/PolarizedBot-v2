@@ -18,6 +18,7 @@ public class ModuleManager {
     private CommandDispatcher<MessageSource> dispatcher;
     private List<IModule> modules;
     private List<IMessageRunner> messageRunners;
+    private int activeCount = 0;
 
 
     public ModuleManager() {
@@ -35,9 +36,11 @@ public class ModuleManager {
     private void refreshActiveModules() {
         this.dispatcher = new CommandDispatcher<>();
         this.messageRunners.clear();
+        activeCount = 0;
 
         for (IModule module : this.modules) {
             if (module.isActive()) {
+                activeCount += 1;
                 ICommand command = module.getCommand();
                 IMessageRunner messageRunner = module.getMessageRunner();
 
@@ -83,6 +86,6 @@ public class ModuleManager {
     }
 
     public int getActiveModuleCount() {
-        return this.messageRunners.size();
+        return this.activeCount;
     }
 }

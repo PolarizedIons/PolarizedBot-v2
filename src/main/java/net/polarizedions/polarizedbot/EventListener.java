@@ -22,7 +22,7 @@ public class EventListener {
         Bot.logger.info("Logged in as " + event.getSelf().getUsername() + "#" + event.getSelf().getDiscriminator());
     }
 
-    private void onMessageEvent(MessageCreateEvent event) {
+    private void onMessageEvent(@NotNull MessageCreateEvent event) {
         Bot.logger.debug("MESSAGE: {}", event.getMessage());
         this.bot.getModuleManager().runMessage(new MessageSource(bot, event));
     }
