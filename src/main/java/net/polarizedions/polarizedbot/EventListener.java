@@ -1,11 +1,9 @@
 package net.polarizedions.polarizedbot;
 
 
-import discord4j.core.DiscordClient;
 import discord4j.core.event.EventDispatcher;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.event.domain.message.MessageEvent;
 import net.polarizedions.polarizedbot.modules.MessageSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +24,6 @@ public class EventListener {
 
     private void onMessageEvent(MessageCreateEvent event) {
         System.out.println("MESSAGE: " + event);
-        this.bot.getModuleManager().runMessage(new MessageSource(event));
+        this.bot.getModuleManager().runMessage(new MessageSource(bot, event));
     }
 }

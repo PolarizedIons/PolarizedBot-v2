@@ -1,10 +1,12 @@
 package net.polarizedions.polarizedbot.modules;
 
+import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.MessageChannel;
 import discord4j.core.object.entity.User;
 import discord4j.core.spec.EmbedCreateSpec;
+import net.polarizedions.polarizedbot.Bot;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
@@ -17,8 +19,10 @@ import java.util.function.Consumer;
 public class MessageSource {
     private Message message;
     private boolean privateMessage;
+    private Bot bot;
 
-    public MessageSource(@NotNull MessageCreateEvent event) {
+    public MessageSource(Bot bot, @NotNull MessageCreateEvent event) {
+        this.bot = bot;
         this.message = event.getMessage();
         this.privateMessage = !event.getGuildId().isPresent();
     }
@@ -84,5 +88,23 @@ public class MessageSource {
      */
     public Mono<MessageChannel> getChannel() {
         return this.message.getChannel();
+    }
+
+    /**
+     * Get the instance of the bot
+     *
+     * @return the bot instance
+     */
+    public Bot getBot() {
+       return this.bot;
+    }
+
+    /**
+     * Shortcut method for {@link MessageSource#getBot()} -> {@link Bot#getClient()}.
+     *
+     * @return the discord client
+     */
+    public DiscordClient getClient() {
+        return this.getBot().getClient();
     }
 }

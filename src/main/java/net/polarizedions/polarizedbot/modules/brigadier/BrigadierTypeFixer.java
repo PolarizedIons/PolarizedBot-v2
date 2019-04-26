@@ -1,8 +1,9 @@
-package net.polarizedions.polarizedbot.modules;
+package net.polarizedions.polarizedbot.modules.brigadier;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import net.polarizedions.polarizedbot.modules.MessageSource;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

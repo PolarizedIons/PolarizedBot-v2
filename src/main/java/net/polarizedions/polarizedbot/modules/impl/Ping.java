@@ -5,11 +5,12 @@ import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.modules.ICommand;
 import net.polarizedions.polarizedbot.modules.IModule;
 import net.polarizedions.polarizedbot.modules.MessageSource;
+import net.polarizedions.polarizedbot.util.Colors;
 
 import java.time.Duration;
 import java.time.Instant;
 
-import static net.polarizedions.polarizedbot.modules.BrigadierTypeFixer.literal;
+import static net.polarizedions.polarizedbot.modules.brigadier.BrigadierTypeFixer.literal;
 
 
 public class Ping implements IModule {
@@ -35,6 +36,7 @@ public class Ping implements IModule {
                 channel.createEmbed(spec -> {
                     spec.setTitle(Language.get("ping.title"));
                     spec.addField(Language.get("ping.ping"), Language.get("ping.pong"), true);
+                    spec.setColor(Colors.NEUTRAL);
                 }).subscribe(msg -> {
                     msg.edit(msgSpec -> {
                         msgSpec.setEmbed(embedSpec -> {
@@ -43,6 +45,7 @@ public class Ping implements IModule {
 
                             embedSpec.setTitle(Language.get("ping.title"));
                             embedSpec.addField(Language.get("ping.ping"), Language.get("ping.time", diff.toMillis()), true);
+                            embedSpec.setColor(Colors.INFO);
                         });
                     }).subscribe();
                 });
