@@ -40,7 +40,6 @@ public class Language {
                     key = key.substring(0, key.length() - 2);
                 }
                 LANGUAGE_MAP.put(key, entry.getValue().getAsString());
-                System.out.println("LANG: " + key + " = " + entry.getValue().getAsString());
             }
         }
     }
