@@ -19,11 +19,11 @@ public class EventListener {
     }
 
     private void onReadyEvent(@NotNull ReadyEvent event) {
-        System.out.println("Logged in as " + event.getSelf().getUsername() + "#" + event.getSelf().getDiscriminator());
+        Bot.logger.info("Logged in as " + event.getSelf().getUsername() + "#" + event.getSelf().getDiscriminator());
     }
 
     private void onMessageEvent(MessageCreateEvent event) {
-        System.out.println("MESSAGE: " + event);
+        Bot.logger.debug("MESSAGE: {}", event.getMessage());
         this.bot.getModuleManager().runMessage(new MessageSource(bot, event));
     }
 }
