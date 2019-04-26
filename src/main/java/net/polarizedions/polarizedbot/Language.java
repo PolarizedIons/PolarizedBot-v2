@@ -36,7 +36,11 @@ public class Language {
                 parseTree(key, entry.getValue().getAsJsonObject());
             }
             else {
+                if (key.endsWith(".*")) {
+                    key = key.substring(0, key.length() - 2);
+                }
                 LANGUAGE_MAP.put(key, entry.getValue().getAsString());
+                System.out.println("LANG: " + key + " = " + entry.getValue().getAsString());
             }
         }
     }
@@ -76,5 +80,15 @@ public class Language {
      */
     public String translate(String key, Object... context) {
         return String.format(LANGUAGE_MAP.getOrDefault(key, key), context);
+    }
+
+    /**
+     * Returns whether or not there is a translation for a specified key
+     *
+     * @param key the key for translation process
+     * @return if it can be translated
+     */
+    public boolean canTranslate(String key) {
+        return LANGUAGE_MAP.get(key) != null;
     }
 }

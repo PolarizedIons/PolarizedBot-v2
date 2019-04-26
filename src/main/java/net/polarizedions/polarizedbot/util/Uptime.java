@@ -29,7 +29,9 @@ public class Uptime {
                 continue;
             }
 
-            formatted.append(Language.get("time." + i, time[i])).append(" ");
+            boolean hasSpecialTranslation = Language.get().canTranslate("time." + i + "." + time[i]);
+            String translationKey = "time." + i + (hasSpecialTranslation ? "." + time[i] : "");
+            formatted.append(Language.get(translationKey, time[i])).append(" ");
         }
 
         return formatted.toString().trim();

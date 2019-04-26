@@ -3,7 +3,7 @@
         "title": "About",
         "name": "Bot Name:",
         "moduleCount": "Modules:",
-        "moduleCountValue": "%s/%s",
+        "moduleCountValue": "%s/%s enabled",
         "version": "Bot Version:",
         "uptime": "Uptime:",
         "buildTime": "Build Time:",
@@ -16,10 +16,25 @@
         "time": "%sms"
     },
     "time": {
-        "0": "%s weeks",
-        "1": "%s days",
-        "2": "%s hours",
-        "3": "%s minutes",
-        "4": "%s seconds"
+        "0": {
+            "*": "%s weeks",
+            "1": "%s week"
+        },
+        "1": {
+            "*": "%s days",
+            "1": "%s day"
+        },
+        "2": {
+            "*": "%s hours",
+            "1": "%s hour"
+        },
+        "3": {
+            "*": "%s minutes",
+            "1": "%s minute"
+        },
+        "4": {
+            "*": "%s seconds",
+            "1": "%s second"
+        }
     }
 }
