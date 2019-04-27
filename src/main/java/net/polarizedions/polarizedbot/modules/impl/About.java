@@ -10,6 +10,7 @@ import net.polarizedions.polarizedbot.modules.ICommand;
 import net.polarizedions.polarizedbot.modules.IModule;
 import net.polarizedions.polarizedbot.modules.MessageSource;
 import net.polarizedions.polarizedbot.modules.ModuleManager;
+import net.polarizedions.polarizedbot.modules.PolarizedBotModule;
 import net.polarizedions.polarizedbot.util.BuildInfo;
 import net.polarizedions.polarizedbot.util.Colors;
 import net.polarizedions.polarizedbot.util.PermUtil;
@@ -23,6 +24,7 @@ import static net.polarizedions.polarizedbot.modules.brigadier.BrigadierTypeFixe
 import static net.polarizedions.polarizedbot.modules.brigadier.DiscordPing.discordPing;
 import static net.polarizedions.polarizedbot.modules.brigadier.DiscordPing.getDiscordPing;
 
+@PolarizedBotModule
 public class About implements IModule {
     private ICommand command = new Command();
 

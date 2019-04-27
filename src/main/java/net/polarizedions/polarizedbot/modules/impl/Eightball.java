@@ -5,6 +5,7 @@ import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.modules.ICommand;
 import net.polarizedions.polarizedbot.modules.IModule;
 import net.polarizedions.polarizedbot.modules.MessageSource;
+import net.polarizedions.polarizedbot.modules.PolarizedBotModule;
 import net.polarizedions.polarizedbot.util.Colors;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static net.polarizedions.polarizedbot.modules.brigadier.BrigadierTypeFixer.argument;
 import static net.polarizedions.polarizedbot.modules.brigadier.BrigadierTypeFixer.literal;
 
+@PolarizedBotModule
 public class Eightball implements IModule {
     private static final Random RANDOM = new Random();
     private ICommand command = new Command();
