@@ -1,5 +1,6 @@
 {
     "8ball": {
+        "noQuestion": "You must ask a question",
         "answer": {
             "1": "It is certain.",
             "2": "It is decidedly so.",

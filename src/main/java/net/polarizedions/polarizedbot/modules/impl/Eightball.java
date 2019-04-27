@@ -42,13 +42,24 @@ public class Eightball implements IModule {
         }
 
         private int eightball(MessageSource source, String q) {
-            source.replyEmbed(spec -> {
-                spec.addField(q, Language.get("8ball.answer." + (RANDOM.nextInt(20) + 1)), true);
+            if (source.getMessage().endsWith("?")) {
+                source.replyEmbed(spec -> {
+                    spec.addField(q, Language.get("8ball.answer." + ( RANDOM.nextInt(20) + 1 )), true);
 
-                spec.setThumbnail("https://i.imgur.com/HvW2ZIB.png");
-                spec.setColor(Colors.INFO);
-                spec.setTimestamp(Instant.now());
-            });
+                    spec.setThumbnail("https://i.imgur.com/HvW2ZIB.png");
+                    spec.setColor(Colors.INFO);
+                    spec.setTimestamp(Instant.now());
+                });
+            }
+            else {
+                source.replyEmbed(spec -> {
+                    spec.addField(q, Language.get("8ball.noQuestion"), true);
+
+                    spec.setThumbnail("https://i.imgur.com/HvW2ZIB.png");
+                    spec.setColor(Colors.BAD);
+                    spec.setTimestamp(Instant.now());
+                });
+            }
             return 1;
         }
     }
