@@ -37,7 +37,12 @@
     "info": {
         "title": "Info",
         "userName": "Username:",
-        "userId": "User ID:"
+        "userId": "User ID:",
+        "isAdmin": {
+            "*": "Is a bot admin?",
+            "true": "Yes",
+            "false": "No"
+        }
     },
     "ping": {
         "ping": "Ping",

@@ -5,6 +5,7 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.MessageChannel;
 import discord4j.core.object.entity.User;
+import discord4j.core.object.util.Snowflake;
 import discord4j.core.spec.EmbedCreateSpec;
 import net.polarizedions.polarizedbot.Bot;
 import org.jetbrains.annotations.NotNull;
@@ -19,12 +20,14 @@ import java.util.function.Consumer;
 public class MessageSource {
     private Message message;
     private boolean privateMessage;
+    private Snowflake guildId;
     private Bot bot;
 
     public MessageSource(Bot bot, @NotNull MessageCreateEvent event) {
         this.bot = bot;
         this.message = event.getMessage();
         this.privateMessage = !event.getGuildId().isPresent();
+        this.guildId = event.getGuildId().get();
     }
 
     /**
@@ -106,5 +109,14 @@ public class MessageSource {
      */
     public DiscordClient getClient() {
         return this.getBot().getClient();
+    }
+
+    /**
+     * Get the guild id of the message. MAY BE null.
+     *
+     * @return the guild id
+     */
+    public Snowflake getGuildId() {
+        return this.guildId;
     }
 }

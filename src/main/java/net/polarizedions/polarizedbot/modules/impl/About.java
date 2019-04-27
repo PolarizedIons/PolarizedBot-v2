@@ -12,6 +12,7 @@ import net.polarizedions.polarizedbot.modules.MessageSource;
 import net.polarizedions.polarizedbot.modules.ModuleManager;
 import net.polarizedions.polarizedbot.util.BuildInfo;
 import net.polarizedions.polarizedbot.util.Colors;
+import net.polarizedions.polarizedbot.util.PermUtil;
 import net.polarizedions.polarizedbot.util.Uptime;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,11 +76,12 @@ public class About implements IModule {
         int info(MessageSource source, Long discordId) {
             DiscordClient client = source.getClient();
             final User user = discordId == null ? source.getUser().get() : client.getUserById(Snowflake.of(discordId)).block();
-
+            boolean isAdmin = source.isPrivateMessage() ? PermUtil.userIsOwner(source.getBot(), user) : PermUtil.userIsAdmin(source.getBot(), user.asMember(source.getGuildId()).block());
             source.replyEmbed(spec -> {
                 spec.setTitle(Language.get("info.title"));
                 spec.addField(Language.get("info.userName"), user.getUsername() + "#" + user.getDiscriminator(), true);
                 spec.addField(Language.get("info.userId"), user.getId().asLong() + "", true);
+                spec.addField(Language.get("info.isAdmin"), Language.get("info.isAdmin." + isAdmin), true);
 
                 spec.setThumbnail(user.getAvatarUrl());
                 spec.setColor(Colors.INFO);
