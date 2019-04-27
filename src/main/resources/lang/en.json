@@ -40,7 +40,6 @@
         "userId": "User ID:"
     },
     "ping": {
-        "title": "Pong",
         "ping": "Ping",
         "pong": "ponging...",
         "time": "%sms"

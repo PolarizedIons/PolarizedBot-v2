@@ -34,7 +34,6 @@ public class Ping implements IModule {
             source.getChannel().subscribe(channel -> {
                 Instant start = Instant.now();
                 channel.createEmbed(spec -> {
-                    spec.setTitle(Language.get("ping.title"));
                     spec.addField(Language.get("ping.ping"), Language.get("ping.pong"), true);
 
                     spec.setColor(Colors.NEUTRAL);
@@ -45,7 +44,6 @@ public class Ping implements IModule {
                             Instant end = Instant.now();
                             Duration diff = Duration.between(start, end);
 
-                            embedSpec.setTitle(Language.get("ping.title"));
                             embedSpec.addField(Language.get("ping.ping"), Language.get("ping.time", diff.toMillis()), true);
 
                             embedSpec.setColor(Colors.INFO);
