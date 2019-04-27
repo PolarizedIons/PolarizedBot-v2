@@ -3,19 +3,21 @@ package net.polarizedions.polarizedbot.modules;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import discord4j.core.object.entity.User;
+import net.polarizedions.polarizedbot.Bot;
 import net.polarizedions.polarizedbot.config.BotConfig;
-import net.polarizedions.polarizedbot.modules.impl.About;
-import net.polarizedions.polarizedbot.modules.impl.Eightball;
-import net.polarizedions.polarizedbot.modules.impl.Ping;
 import org.jetbrains.annotations.NotNull;
+import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Manages the modules that the bot runs.
  */
 public class ModuleManager {
+    private static final String MODULE_PATH = "net.polarizedions.polarizedbot.modules.impl";
+
     private CommandDispatcher<MessageSource> dispatcher;
     private List<IModule> modules;
     private List<IMessageRunner> messageRunners;
@@ -26,9 +28,26 @@ public class ModuleManager {
         this.modules = new ArrayList<>();
         this.messageRunners = new ArrayList<>();
 
-        this.modules.add(new About());
-        this.modules.add(new Eightball());
-        this.modules.add(new Ping());
+        this.registerModules();
+    }
+
+    /**
+     * Loads all classes annotated with {@link PolarizedBotModule}
+     */
+    private void registerModules() {
+        Reflections reflections = new Reflections(MODULE_PATH);
+        Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(PolarizedBotModule.class);
+        for (Class<?> annotatedClass : annotatedClasses) {
+            try {
+                Object reflectionInstance = annotatedClass.newInstance();
+                if (reflectionInstance instanceof IModule) {
+                    this.modules.add((IModule) reflectionInstance);
+                    Bot.logger.info("Registered module: {}", annotatedClass.getSimpleName());
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                Bot.logger.error("Could not load module", e);
+            }
+        }
         this.refreshActiveModules();
     }
 
@@ -59,6 +78,7 @@ public class ModuleManager {
 
     /**
      * Run the message through the command dispatcher (if it starts with the command prefix)
+     *
      * @param source
      */
     public void runMessage(@NotNull MessageSource source) {
@@ -72,8 +92,7 @@ public class ModuleManager {
             try {
                 dispatcher.execute(source.getMessage().substring(botPrefix.length()), source);
                 return;
-            }
-            catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException e) {
                 // NOOP
             }
         }
