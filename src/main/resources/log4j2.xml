@@ -43,5 +43,8 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingRandomAccessFile"/>
         </Logger>
+        <Logger name="org.reflections.Reflections" additivity="false">
+            <AppenderRef level="OFF" ref="Console"/>
+        </Logger>
     </Loggers>
 </Configuration>
