@@ -5,6 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import discord4j.core.object.entity.User;
 import net.polarizedions.polarizedbot.config.BotConfig;
 import net.polarizedions.polarizedbot.modules.impl.About;
+import net.polarizedions.polarizedbot.modules.impl.Eightball;
 import net.polarizedions.polarizedbot.modules.impl.Ping;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +27,7 @@ public class ModuleManager {
         this.messageRunners = new ArrayList<>();
 
         this.modules.add(new About());
+        this.modules.add(new Eightball());
         this.modules.add(new Ping());
         this.refreshActiveModules();
     }
