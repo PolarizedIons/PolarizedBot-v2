@@ -9,6 +9,11 @@
         "buildTime": "Build Time:",
         "javaVersion": "Java Version:"
     },
+    "info": {
+        "title": "Info",
+        "userName": "Username:",
+        "userId": "User ID:"
+    },
     "ping": {
         "title": "Pong",
         "ping": "Ping",
