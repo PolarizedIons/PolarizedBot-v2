@@ -4,6 +4,7 @@ import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.User;
 import discord4j.core.object.util.Permission;
 import net.polarizedions.polarizedbot.Bot;
+import net.polarizedions.polarizedbot.modules.MessageSource;
 import org.jetbrains.annotations.NotNull;
 
 public class PermUtil {
@@ -28,5 +29,15 @@ public class PermUtil {
      */
     public static boolean userIsAdmin(Bot bot, @NotNull Member member) {
         return member.getBasePermissions().block().contains(Permission.MANAGE_GUILD) || userIsOwner(bot, member);
+    }
+
+    /**
+     * Whether the author of the message has admin permissions
+     *
+     * @param source the message
+     * @return if the author is an admin
+     */
+    public static boolean userIsAdmin(@NotNull MessageSource source) {
+        return source.isPrivateMessage() ? PermUtil.userIsOwner(source.getBot(), source.getUser().get()) : PermUtil.userIsAdmin(source.getBot(), source.getUser().get().asMember(source.getGuildId()).block());
     }
 }
