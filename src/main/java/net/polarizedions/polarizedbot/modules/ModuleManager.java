@@ -44,7 +44,8 @@ public class ModuleManager {
                     this.modules.add((IModule) reflectionInstance);
                     Bot.logger.info("Registered module: {}", annotatedClass.getSimpleName());
                 }
-            } catch (InstantiationException | IllegalAccessException e) {
+            }
+            catch (InstantiationException | IllegalAccessException e) {
                 Bot.logger.error("Could not load module", e);
             }
         }
@@ -92,7 +93,8 @@ public class ModuleManager {
             try {
                 dispatcher.execute(source.getMessage().substring(botPrefix.length()), source);
                 return;
-            } catch (CommandSyntaxException e) {
+            }
+            catch (CommandSyntaxException e) {
                 // NOOP
             }
         }
