@@ -157,7 +157,7 @@ public class WolframAlpha implements IModule {
         @NotNull
         @Contract(pure = true)
         private String discordEscape(@NotNull String text) {
-            return text.replaceAll("([*_~])", "\\$1");
+            return text.replaceAll("([*_~])", "\\\\$1");
         }
     }
 }
