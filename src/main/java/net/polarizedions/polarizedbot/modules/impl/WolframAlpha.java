@@ -145,7 +145,7 @@ public class WolframAlpha implements IModule {
 
                     String title = this.discordEscape(pod.name);
                     String value = this.discordEscape(String.join("\n- ", pod.data));
-                    if (value.contains("\n")) {
+                    if (pod.data.size() > 1) {
                         value = "- " + value;
                     }
 
