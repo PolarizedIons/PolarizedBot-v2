@@ -42,13 +42,14 @@ public class ModuleManager {
                 Object reflectionInstance = annotatedClass.newInstance();
                 if (reflectionInstance instanceof IModule) {
                     this.modules.add((IModule) reflectionInstance);
-                    Bot.logger.info("Registered module: {}", annotatedClass.getSimpleName());
+                    Bot.logger.debug("Registered module: {}", annotatedClass.getSimpleName());
                 }
             }
             catch (InstantiationException | IllegalAccessException e) {
                 Bot.logger.error("Could not load module", e);
             }
         }
+        Bot.logger.info("Registered {} modules", this.modules.size());
         this.refreshActiveModules();
     }
 

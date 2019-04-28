@@ -70,5 +70,18 @@
             "*": "%s seconds",
             "1": "%s second"
         }
+    },
+    "wolfram": {
+        "didYouMean": "Sorry, did you mean:",
+        "errorField": "Error:",
+        "error": {
+            "no_data": "WolframAlpha has no textual data on that. Sorry :(",
+            "unknown": "Unknown error occurred",
+            "no_api_key": "The bot cannot do this without an API key. Please contact the bot owner!",
+            "connection": "Error reaching WolframAlpha",
+            "no_reply": "WolframAlpha did not send back a reply",
+            "timed_out": "WolframAlpha took too long to calculate that, try again.",
+            "fail": "WolframAlpha failed to understand that, try rephrasing it?"
+        }
     }
 }
