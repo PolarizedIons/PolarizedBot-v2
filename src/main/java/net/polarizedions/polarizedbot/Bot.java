@@ -5,6 +5,7 @@ import discord4j.core.DiscordClientBuilder;
 import net.polarizedions.polarizedbot.config.BotConfig;
 import net.polarizedions.polarizedbot.modules.ModuleManager;
 import net.polarizedions.polarizedbot.util.BuildInfo;
+import net.polarizedions.polarizedbot.util.PresenceUpdator;
 import net.polarizedions.polarizedbot.util.Uptime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +29,8 @@ public class Bot {
 
     private void run() {
         logger.info("Logging in...");
-        this.client.login().block();
+        this.client.login().subscribe();
+        new PresenceUpdator(this.getClient());
     }
 
     public DiscordClient getClient() {
