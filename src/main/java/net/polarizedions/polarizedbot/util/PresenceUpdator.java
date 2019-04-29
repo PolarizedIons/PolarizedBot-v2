@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class PresenceUpdator {
-    private static final int RATE = 10; // seconds
+    private static final int RATE = 300; // seconds
     private List<Supplier<String>> presences;
     private DiscordClient client;
     private Timer timer;
