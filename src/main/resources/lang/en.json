@@ -49,6 +49,10 @@
         "pong": "ponging...",
         "time": "%sms"
     },
+    "rate": {
+        "title": "I'd give that a",
+        "rating": "%s/10"
+    },
     "time": {
         "0": {
             "*": "%s weeks",
