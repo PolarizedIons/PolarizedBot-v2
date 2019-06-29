@@ -63,13 +63,13 @@ public class UnitConverter implements IModule {
             Matcher metricMatcher = metricRegex.matcher(source.getMessage());
 
             while (imperialMatcher.find()) {
-                Imperial.ImperialUnit unit = imperialMap.get(imperialMatcher.group(2));
+                Imperial.ImperialUnit unit = imperialMap.get(imperialMatcher.group(2).toLowerCase());
                 Double amount = Double.parseDouble(imperialMatcher.group(1));
                 response.append(FORMAT.format(amount)).append(" ").append(unit.unitName).append(" -> ").append(convert(amount, unit)).append("\n");
             }
 
             while (metricMatcher.find()) {
-                Metric.MetricUnit unit = metricMap.get(metricMatcher.group(2));
+                Metric.MetricUnit unit = metricMap.get(metricMatcher.group(2).toLowerCase());
                 Double amount = Double.parseDouble(metricMatcher.group(1));
                 response.append(FORMAT.format(amount)).append(" ").append(unit.unitName).append(" -> ").append(convert(amount, unit)).append("\n");
             }
