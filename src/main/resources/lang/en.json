@@ -44,6 +44,18 @@
             "false": "No"
         }
     },
+    "minecraft": {
+        "title": "Minecraft Profile",
+        "name": "Name:",
+        "uuid": "UUID:",
+        "name_history": "Name History:",
+        "migrated": {
+            "*": "Mojang Account?",
+            "true": "Yes",
+            "false": "No"
+        },
+        "error": "An error has occurred looking up this profile."
+    },
     "ping": {
         "ping": "Ping",
         "pong": "ponging...",

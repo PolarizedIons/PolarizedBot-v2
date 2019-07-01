@@ -1,6 +1,7 @@
 package net.polarizedions.polarizedbot.api.apiutil;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jetbrains.annotations.Contract;
@@ -56,6 +57,6 @@ public class HTTPResponse {
 
     public JsonObject asJsonObject() {
         JsonElement json = this.asJson();
-        return json == null ? null : json.getAsJsonObject();
+        return json == null || json instanceof JsonNull ? null : json.getAsJsonObject();
     }
 }
