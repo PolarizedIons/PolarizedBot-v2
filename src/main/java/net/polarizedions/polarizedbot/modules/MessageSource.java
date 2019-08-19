@@ -27,7 +27,7 @@ public class MessageSource {
         this.bot = bot;
         this.message = event.getMessage();
         this.privateMessage = !event.getGuildId().isPresent();
-        this.guildId = event.getGuildId().get();
+        this.guildId = event.getGuildId().isPresent() ? event.getGuildId().get() : Snowflake.of(-1);
     }
 
     /**
