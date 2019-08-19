@@ -46,7 +46,6 @@ public class PresenceUpdator {
 
     private void update() {
         String newPresence = presences.get(ThreadLocalRandom.current().nextInt(presences.size())).get();
-        Bot.logger.debug("New presence: {}", newPresence);
         this.client.updatePresence(Presence.online(Activity.playing(newPresence))).block();
     }
 
