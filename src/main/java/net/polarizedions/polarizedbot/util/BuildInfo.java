@@ -24,7 +24,7 @@ public class BuildInfo {
         Class<BuildInfo> clazz = BuildInfo.class;
         for (Field field : clazz.getFields()) {
             String value = buildInfo.getProperty(field.getName());
-            if (value == null || value.startsWith("${") && value.endsWith("}")) {
+            if (value == null || (value.startsWith("${") && value.endsWith("}"))) {
                 continue;
             }
 
