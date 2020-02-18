@@ -87,6 +87,53 @@
             "1": "%s second"
         }
     },
+    "weather": {
+        "error_title": "An error has occured!",
+        "error": "Error: ",
+        "error_location": "Error getting location data for %s",
+        "error_weather": "Error getting weather for %s",
+        "title": "Weather for: %s",
+        "summery": {
+            "label": "Summery:",
+            "value": ""
+        },
+        "precipitation": {
+            "label": "Precipitation:",
+            "value": "%s%%"
+        },
+        "temperature_c": {
+            "label": "Temp (˚C):",
+            "value": "%s"
+        },
+        "temperature_f": {
+            "label": "Temp (˚F):",
+            "value": "%s"
+        },
+        "humidity": {
+            "label": "Humidity:",
+            "value": "%s%%"
+        },
+        "pressure": {
+            "label": "Pressure:",
+            "value": "%s hPa"
+        },
+        "wind_speed_mps": {
+            "label": "Wind speed (m/s):",
+            "value": "%s"
+        },
+        "wind_speed_mph": {
+            "label": "Wind speed (mph):",
+            "value": "%s"
+        },
+        "wind_direction": {
+            "label": "Wind Direction:",
+            "value": "%s"
+        },
+        "uv_index": {
+            "label": "UV Index:",
+            "value": "%s"
+        }
+    },
     "wolfram": {
         "didYouMean": "Sorry, did you mean:",
         "errorField": "Error:",

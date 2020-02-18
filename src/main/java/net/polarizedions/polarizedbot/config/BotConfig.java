@@ -16,6 +16,8 @@ public class BotConfig {
     public String prefix = "!";
     public String lang = "en";
     public String wolframAlphaAPI = "";
+    public String darkSkyAPI = "";
+    public String mapBoxAPI = "";
 
     public static BotConfig get() {
         if (BotConfig.instance == null) {
