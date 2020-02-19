@@ -78,14 +78,12 @@ public class Weather implements IModule {
                 spec.setTitle(Language.get("weather.title", loc.name));
 
                 spec.addField(Language.get("weather.summery.label"), weather.icon.unicode + " " + weather.summery, true);
+                spec.addField(Language.get("weather.temperature.label"), Language.get("weather.temperature.value", weather.temperatureC, weather.temperatureF), true);
                 spec.addField(Language.get("weather.precipitation.label"), Language.get("weather.precipitation.value", weather.precipitationProb), true);
-                spec.addField(Language.get("weather.temperature_c.label"), Language.get("weather.temperature_c.value", weather.temperatureC), true);
-                spec.addField(Language.get("weather.temperature_f.label"), Language.get("weather.temperature_f.value", weather.temperatureF), true);
                 spec.addField(Language.get("weather.humidity.label"), Language.get("weather.humidity.value", weather.humidity), true);
                 spec.addField(Language.get("weather.pressure.label"), Language.get("weather.pressure.value", weather.pressure), true);
-                spec.addField(Language.get("weather.wind_speed_mps.label"), Language.get("weather.wind_speed_mps.value", weather.windSpeedMPS), true);
-                spec.addField(Language.get("weather.wind_speed_mph.label"), Language.get("weather.wind_speed_mph.value", weather.windSpeedMPH), true);
-                spec.addField(Language.get("weather.wind_direction.label"), Language.get("weather.wind_direction.value", weather.windDirection.code), true);
+                spec.addField(Language.get("weather.wind_speed.label"), Language.get("weather.wind_speed.value", weather.windSpeedMPS, weather.windSpeedMPH), true);
+                spec.addField(Language.get("weather.wind_direction.label"), Language.get("weather.wind_direction.value." + weather.windDirection.code), true);
                 spec.addField(Language.get("weather.uv_index.label"), Language.get("weather.uv_index.value", weather.uvIndex), true);
 
                 spec.setColor(Colors.INFO);

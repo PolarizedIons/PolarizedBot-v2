@@ -101,13 +101,9 @@
             "label": "Precipitation:",
             "value": "%s%%"
         },
-        "temperature_c": {
-            "label": "Temp (˚C):",
-            "value": "%s"
-        },
-        "temperature_f": {
-            "label": "Temp (˚F):",
-            "value": "%s"
+        "temperature": {
+            "label": "Temperature:",
+            "value": "%s˚C / %s˚F"
         },
         "humidity": {
             "label": "Humidity:",
@@ -117,17 +113,22 @@
             "label": "Pressure:",
             "value": "%s hPa"
         },
-        "wind_speed_mps": {
-            "label": "Wind speed (m/s):",
-            "value": "%s"
-        },
-        "wind_speed_mph": {
-            "label": "Wind speed (mph):",
-            "value": "%s"
+        "wind_speed": {
+            "label": "Wind speed:",
+            "value": "%sm/s / %smph"
         },
         "wind_direction": {
             "label": "Wind Direction:",
-            "value": "%s"
+            "value": {
+                "N": "North",
+                "E": "East",
+                "S": "South",
+                "W": "West",
+                "NE": "North East",
+                "SE": "South East",
+                "SW": "South West",
+                "NW": "North West"
+            }
         },
         "uv_index": {
             "label": "UV Index:",
