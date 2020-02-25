@@ -25,7 +25,7 @@ public class UnitConverter implements IModule {
     }
 
     private class Runner implements IMessageRunner {
-        private final String REGEX_TEMPLATE = "(?:^|\\s)(-?[0-9]+(?:.[0-9]+)?)\\s?(%s)(?:$|\\s)";
+        private final String REGEX_TEMPLATE = "(?:^|\\s)(-?[0-9]+(?:.[0-9]+)?)\\s?(%s)(?:$|\\W)";
         private final DecimalFormat FORMAT = new DecimalFormat("#.##");
         private Map<String, Imperial.ImperialUnit> imperialMap = new HashMap<>();
         private Map<String, Metric.MetricUnit> metricMap = new HashMap<>();
