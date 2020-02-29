@@ -2,4 +2,5 @@
 target/
 *.iml
 botConfig.json
+variables.json
 logs/

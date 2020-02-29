@@ -29,6 +29,16 @@ public class ModuleManager {
         this.messageRunners = new ArrayList<>();
 
         this.registerModules();
+
+        for (IModule module : this.modules) {
+            module.startup();
+        }
+    }
+
+    public void shutdown() {
+        for (IModule module : this.modules) {
+            module.shutdown();
+        }
     }
 
     /**

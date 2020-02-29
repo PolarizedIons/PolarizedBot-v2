@@ -31,4 +31,8 @@ public interface IModule {
     default boolean isActive() {
         return true; // TODO: load from module config
     }
+
+    default void startup() { }
+
+    default void shutdown() { }
 }

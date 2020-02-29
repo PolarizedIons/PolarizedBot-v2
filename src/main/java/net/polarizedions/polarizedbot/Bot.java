@@ -25,6 +25,11 @@ public class Bot {
 
         logger.debug("Registering event listeners...");
         new EventListener(this);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Shutting down...");
+            this.moduleManager.shutdown();
+        }));
     }
 
     private void run() {
