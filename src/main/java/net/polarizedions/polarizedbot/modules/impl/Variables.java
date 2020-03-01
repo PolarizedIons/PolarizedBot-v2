@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
 import net.polarizedions.polarizedbot.Bot;
+import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.modules.*;
 import net.polarizedions.polarizedbot.util.Colors;
 
@@ -61,7 +62,7 @@ public class Variables implements IModule {
 
         private int run(MessageSource source) {
             source.replyEmbed(spec -> {
-                spec.setTitle("Variable Query");
+                spec.setTitle(Language.get("variables.query.title"));
 
                 for (String var : variableTracker.variables.keySet()) {
                     spec.addField(var, variableTracker.query(var), true);

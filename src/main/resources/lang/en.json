@@ -87,6 +87,11 @@
             "1": "%s second"
         }
     },
+    "variables": {
+    "query": {
+        "title": "Variable Query:"
+        }
+    },
     "weather": {
         "error_title": "An error has occured!",
         "error": "Error: ",
