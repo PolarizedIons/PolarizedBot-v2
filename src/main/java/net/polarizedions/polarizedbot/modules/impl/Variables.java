@@ -44,7 +44,7 @@ public class Variables implements IModule {
     public void startup() {
         this.variableTracker.load();
 
-        this.variablePattern = Pattern.compile("^([a-z_]+)(\\+\\+|--|==)$", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+        this.variablePattern = Pattern.compile("^([a-z0-9_]+)(\\+\\+|--|==)$", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
     }
 
     @Override
