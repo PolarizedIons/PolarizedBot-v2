@@ -111,7 +111,12 @@ public class ModuleManager {
         }
 
         for (IMessageRunner runner : this.messageRunners) {
-            runner.run(source);
+            try {
+                runner.run(source);
+            }
+            catch (Exception e) {
+                Bot.logger.error("Error running message runner {}: {}", runner.getClass().getSimpleName(), e);
+            }
         }
     }
 
