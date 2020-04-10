@@ -8,10 +8,7 @@ import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.modules.*;
 import net.polarizedions.polarizedbot.util.Colors;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.HashMap;
@@ -119,7 +116,7 @@ public class Variables implements IModule {
 
         public void load() {
             try {
-                this.variables = gson.fromJson(new FileReader("variables.json"), mapType);
+                this.variables = gson.fromJson(new FileReader("config/variables.json"), mapType);
             }
             catch (FileNotFoundException e) {
                 Bot.logger.error("Error loading variables!", e);
@@ -128,7 +125,8 @@ public class Variables implements IModule {
 
         public void save() {
             try {
-                FileWriter fw = new FileWriter("variables.json");
+                new File("config").mkdir();
+                FileWriter fw = new FileWriter("config/variables.json");
                 fw.write(gson.toJson(this.variables));
                 fw.flush();
                 fw.close();
