@@ -24,7 +24,7 @@ public class BotConfig {
             }
             catch (FileNotFoundException e) {
                 try {
-                    FileWriter fw = new FileWriter("config.json");
+                    FileWriter fw = new FileWriter("config/config.json");
                     fw.write(gson.toJson(new BotConfig()));
                     fw.close();
                 }
