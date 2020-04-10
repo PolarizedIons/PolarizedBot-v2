@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: Build jar
+        run: mvn -B package --file pom.xml
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/polarizedbot-*-jar-with-dependencies.jar
+
+  build-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+     
+      - name: Build Container & Publish to Github Registry
+        uses: elgohr/Publish-Docker-Github-Action@2.14
+        with:
+          name: polarizedions/polarizedbot-v2/polarizedbot-v2/
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} 
+          registry: docker.pkg.github.com
