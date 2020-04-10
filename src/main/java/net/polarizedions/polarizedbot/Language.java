@@ -23,7 +23,7 @@ public class Language {
      */
     private void init() {
         LANGUAGE_MAP = new HashMap<>();
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/lang/" + BotConfig.get().lang + ".json"))).getAsJsonObject();
+        JsonObject obj = JsonParser.parseReader(new InputStreamReader(getClass().getResourceAsStream("/lang/" + BotConfig.get().lang + ".json"))).getAsJsonObject();
         parseTree("", obj);
     }
 

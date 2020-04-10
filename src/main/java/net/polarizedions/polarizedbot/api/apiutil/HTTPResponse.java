@@ -1,17 +1,12 @@
 package net.polarizedions.polarizedbot.api.apiutil;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.jetbrains.annotations.Contract;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class HTTPResponse {
-    private static final JsonParser parser = new JsonParser();
-
     int code;
     Map<String, String> headers;
     String body;
@@ -49,7 +44,7 @@ public class HTTPResponse {
 
     public JsonElement asJson() {
         if (this.parsedBody == null) {
-            this.parsedBody = parser.parse(this.getBody());
+            this.parsedBody = JsonParser.parseString(this.getBody());
         }
 
         return this.parsedBody;
@@ -58,5 +53,10 @@ public class HTTPResponse {
     public JsonObject asJsonObject() {
         JsonElement json = this.asJson();
         return json == null || json instanceof JsonNull ? null : json.getAsJsonObject();
+    }
+
+    public JsonArray asJsonArray() {
+        JsonElement json = this.asJson();
+        return json == null || json instanceof JsonNull ? null : json.getAsJsonArray();
     }
 }

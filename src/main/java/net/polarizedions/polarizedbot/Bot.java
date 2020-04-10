@@ -18,7 +18,7 @@ public class Bot {
     Bot() {
         logger.info("Starting PolarizedBot v" + BuildInfo.version);
         logger.debug("Building client...");
-        this.client = new DiscordClientBuilder(BotConfig.get().discordToken).build();
+        this.client = DiscordClientBuilder.create(BotConfig.get().discordToken).build();
 
         logger.debug("Loading modules...");
         this.moduleManager = new ModuleManager();
