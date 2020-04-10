@@ -3,10 +3,7 @@ package net.polarizedions.polarizedbot.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class BotConfig {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -22,11 +19,12 @@ public class BotConfig {
     public static BotConfig get() {
         if (BotConfig.instance == null) {
             try {
-                BotConfig.instance = gson.fromJson(new FileReader("botConfig.json"), BotConfig.class);
+                new File("config").mkdir();
+                BotConfig.instance = gson.fromJson(new FileReader("config/config.json"), BotConfig.class);
             }
             catch (FileNotFoundException e) {
                 try {
-                    FileWriter fw = new FileWriter("botConfig.json");
+                    FileWriter fw = new FileWriter("config.json");
                     fw.write(gson.toJson(new BotConfig()));
                     fw.close();
                 }
