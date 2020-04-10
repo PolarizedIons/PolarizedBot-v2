@@ -55,7 +55,7 @@ jobs:
       - name: Build Container & Publish to Github Registry
         uses: elgohr/Publish-Docker-Github-Action@2.14
         with:
-          name: polarizedions/polarizedbot-v2/polarizedbot-v2/
+          name: polarizedions/polarizedbot-v2/polarizedbot-v2
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }} 
           registry: docker.pkg.github.com
