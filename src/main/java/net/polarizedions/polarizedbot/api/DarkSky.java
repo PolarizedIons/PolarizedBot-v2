@@ -26,8 +26,8 @@ public class DarkSky {
         JsonElement windBearing = currently.get("windBearing");
         WeatherResponse response = new WeatherResponse();
         response.datetime = new Date(currently.get("time").getAsLong() * 1000);
-        response.summery = currently.get("summary").getAsString();
-        response.icon = WeatherIcon.fromDarkBox(currently.get("icon").getAsString());
+        response.summary = currently.get("summary").getAsString();
+        response.icon = WeatherIcon.fromDarkSky(currently.get("icon").getAsString());
         response.precipitationProb = currently.get("precipProbability").getAsDouble() * 100.00;
         response.temperatureC = currently.get("temperature").getAsDouble();
         response.temperatureF = toDecimals((response.temperatureC * NINE_OVER_FIVE) + 32, 2);
@@ -35,7 +35,7 @@ public class DarkSky {
         response.pressure = currently.get("pressure").getAsDouble();
         response.windSpeedMPS = currently.get("windSpeed").getAsDouble();
         response.windSpeedMPH = toDecimals(response.windSpeedMPS * 2.23694, 2);
-        response.windDirection = WindDirection.fromDarkBox(windBearing == null ? 0 : windBearing.getAsDouble());
+        response.windDirection = WindDirection.fromDarkSky(windBearing == null ? 0 : windBearing.getAsDouble());
         response.uvIndex = currently.get("uvIndex").getAsInt();
 
         return response;
@@ -48,7 +48,7 @@ public class DarkSky {
 
     public static class WeatherResponse {
         public Date datetime;
-        public String summery;
+        public String summary;
         public WeatherIcon icon;
         public double precipitationProb;
         public double temperatureC;
@@ -64,7 +64,7 @@ public class DarkSky {
         public String toString() {
             return "WeatherResponse{" +
                     "datetime=" + datetime +
-                    ", summery='" + summery + '\'' +
+                    ", summary='" + summary + '\'' +
                     ", icon=" + icon +
                     ", precipitationProb=" + precipitationProb +
                     ", temperatureC=" + temperatureC +
@@ -98,7 +98,7 @@ public class DarkSky {
             this.unicode = unicode;
         }
 
-        public static WeatherIcon fromDarkBox(String icon) {
+        public static WeatherIcon fromDarkSky(String icon) {
             switch (icon) {
                 case "clear-day":
                     return CLEAR_DAY;
@@ -145,7 +145,7 @@ public class DarkSky {
             this.code = code;
         }
 
-        public static WindDirection fromDarkBox(double bearing) {
+        public static WindDirection fromDarkSky(double bearing) {
             bearing = bearing + 180 % 360;
 
             if (bearing >= 337.5 || bearing < 22.5) {

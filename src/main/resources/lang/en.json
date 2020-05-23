@@ -98,8 +98,8 @@
         "error_location": "Error getting location data for %s",
         "error_weather": "Error getting weather for %s",
         "title": "Weather for: %s",
-        "summery": {
-            "label": "Summery:",
+        "summary": {
+            "label": "Summary:",
             "value": ""
         },
         "precipitation": {

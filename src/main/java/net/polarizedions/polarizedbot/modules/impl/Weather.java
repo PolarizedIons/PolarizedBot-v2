@@ -77,7 +77,7 @@ public class Weather implements IModule {
             source.replyEmbed(spec -> {
                 spec.setTitle(Language.get("weather.title", loc.name));
 
-                spec.addField(Language.get("weather.summery.label"), weather.icon.unicode + " " + weather.summery, true);
+                spec.addField(Language.get("weather.summary.label"), weather.icon.unicode + " " + weather.summary, true);
                 spec.addField(Language.get("weather.temperature.label"), Language.get("weather.temperature.value", weather.temperatureC, weather.temperatureF), true);
                 spec.addField(Language.get("weather.precipitation.label"), Language.get("weather.precipitation.value", weather.precipitationProb), true);
                 spec.addField(Language.get("weather.humidity.label"), Language.get("weather.humidity.value", weather.humidity), true);
