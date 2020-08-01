@@ -1,6 +1,6 @@
 .idea/
 target/
 *.iml
-botConfig.json
+config/
 variables.json
 logs/

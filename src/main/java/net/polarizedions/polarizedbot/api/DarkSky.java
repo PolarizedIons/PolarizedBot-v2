@@ -2,17 +2,21 @@ package net.polarizedions.polarizedbot.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import discord4j.core.spec.EmbedCreateSpec;
+import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.api.apiutil.HTTPRequest;
 import net.polarizedions.polarizedbot.config.BotConfig;
 import net.polarizedions.polarizedbot.util.Pair;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DarkSky {
-    public static final String FORECAST_URL = "https://api.darksky.net/forecast/%s/%s,%s?exclude=minutely,hourly,daily,alerts,flags&lang=en&units=si";
+    public static final String FORECAST_URL = "https://api.darksky.net/forecast/%s/%s,%s?exclude=minutely,hourly,alerts,flags&lang=en&units=si";
     public static final double NINE_OVER_FIVE = 9.0 / 5.0;
 
-    public static WeatherResponse getWeather(Pair<Double, Double> location) throws DarkSkyException {
+    public static IWeatherResponse getWeather(Pair<Double, Double> location, ForecastType forecastType) throws DarkSkyException {
         String apiKey = BotConfig.get().darkSkyAPI;
         if (apiKey.isEmpty()) {
             throw new DarkSkyException("API Key missing!");
@@ -22,21 +26,63 @@ public class DarkSky {
                 .doRequest()
                 .asJsonObject();
 
-        JsonObject currently = json.getAsJsonObject("currently");
-        JsonElement windBearing = currently.get("windBearing");
-        WeatherResponse response = new WeatherResponse();
-        response.datetime = new Date(currently.get("time").getAsLong() * 1000);
-        response.summary = currently.get("summary").getAsString();
-        response.icon = WeatherIcon.fromDarkSky(currently.get("icon").getAsString());
-        response.precipitationProb = currently.get("precipProbability").getAsDouble() * 100.00;
-        response.temperatureC = currently.get("temperature").getAsDouble();
+        switch (forecastType) {
+            case TODAY:
+                return getDailyWeather(json, 0);
+            case TOMORROW:
+                return getDailyWeather(json, 1);
+            case CURRENT:
+            default:
+                return getCurrentWeather(json);
+
+        }
+    }
+
+    public static CurrentWeatherResponse getCurrentWeather(JsonObject data) {
+        JsonObject forecast = data.getAsJsonObject("currently");
+        JsonElement windBearing = forecast.get("windBearing");
+
+        CurrentWeatherResponse response = new CurrentWeatherResponse();
+        response.datetime = new Date(forecast.get("time").getAsLong() * 1000);
+        response.summary = forecast.get("summary").getAsString();
+        response.icon = WeatherIcon.fromDarkSky(forecast.get("icon").getAsString());
+        response.precipitationProb = forecast.get("precipProbability").getAsDouble() * 100.00;
+        response.temperatureC = forecast.get("temperature").getAsDouble();
         response.temperatureF = toDecimals((response.temperatureC * NINE_OVER_FIVE) + 32, 2);
-        response.humidity = currently.get("humidity").getAsDouble();
-        response.pressure = currently.get("pressure").getAsDouble();
-        response.windSpeedMPS = currently.get("windSpeed").getAsDouble();
+        response.humidity = forecast.get("humidity").getAsDouble();
+        response.pressure = forecast.get("pressure").getAsDouble();
+        response.windSpeedMPS = forecast.get("windSpeed").getAsDouble();
         response.windSpeedMPH = toDecimals(response.windSpeedMPS * 2.23694, 2);
         response.windDirection = WindDirection.fromDarkSky(windBearing == null ? 0 : windBearing.getAsDouble());
-        response.uvIndex = currently.get("uvIndex").getAsInt();
+        response.uvIndex = forecast.get("uvIndex").getAsInt();
+
+        return response;
+    }
+
+    private static DailyWeatherResponse getDailyWeather(JsonObject data, int index) {
+        JsonObject forecast = data.getAsJsonObject("daily").getAsJsonArray("data").get(index).getAsJsonObject();
+        JsonElement windBearing = forecast.get("windBearing");
+
+        DailyWeatherResponse response = new DailyWeatherResponse();
+        response.datetime = new Date(forecast.get("time").getAsLong() * 1000);
+        response.summary = forecast.get("summary").getAsString();
+        response.offset = data.get("offset").getAsInt();
+        response.icon = WeatherIcon.fromDarkSky(forecast.get("icon").getAsString());
+        response.precipitationProb = forecast.get("precipProbability").getAsDouble() * 100.00;
+        response.temperatureLowC = forecast.get("temperatureLow").getAsDouble();
+        response.temperatureLowF = toDecimals((response.temperatureLowC * NINE_OVER_FIVE) + 32, 2);
+        response.temperatureLowTime = new Date(forecast.get("temperatureLowTime").getAsLong() * 1000);
+        response.temperatureHighC = forecast.get("temperatureHigh").getAsDouble();
+        response.temperatureHighF = toDecimals((response.temperatureHighC * NINE_OVER_FIVE) + 32, 2);
+        response.temperatureHighTime = new Date(forecast.get("temperatureHighTime").getAsLong() * 1000);
+        response.sunriseTime = new Date(forecast.get("sunriseTime").getAsLong() * 1000);
+        response.sunsetTime = new Date(forecast.get("sunsetTime").getAsLong() * 1000);
+        response.humidity = forecast.get("humidity").getAsDouble();
+        response.pressure = forecast.get("pressure").getAsDouble();
+        response.windSpeedMPS = forecast.get("windSpeed").getAsDouble();
+        response.windSpeedMPH = toDecimals(response.windSpeedMPS * 2.23694, 2);
+        response.windDirection = WindDirection.fromDarkSky(windBearing == null ? 0 : windBearing.getAsDouble());
+        response.uvIndex = forecast.get("uvIndex").getAsInt();
 
         return response;
     }
@@ -46,7 +92,23 @@ public class DarkSky {
         return Math.floor(in * placesMask) / placesMask;
     }
 
-    public static class WeatherResponse {
+    public enum ForecastType {
+        CURRENT("current"),
+        TODAY("today"),
+        TOMORROW("tomorrow");
+
+        public String inputStr;
+
+        ForecastType(String inputStr) {
+            this.inputStr = inputStr;
+        }
+    }
+
+    public interface IWeatherResponse {
+        void AddToEmbed(EmbedCreateSpec spec);
+    }
+
+    public static class CurrentWeatherResponse implements IWeatherResponse {
         public Date datetime;
         public String summary;
         public WeatherIcon icon;
@@ -61,21 +123,61 @@ public class DarkSky {
         public int uvIndex;
 
         @Override
-        public String toString() {
-            return "WeatherResponse{" +
-                    "datetime=" + datetime +
-                    ", summary='" + summary + '\'' +
-                    ", icon=" + icon +
-                    ", precipitationProb=" + precipitationProb +
-                    ", temperatureC=" + temperatureC +
-                    ", temperatureF=" + temperatureF +
-                    ", humidity=" + humidity +
-                    ", pressure=" + pressure +
-                    ", windSpeedMPS=" + windSpeedMPS +
-                    ", windSpeedMPH=" + windSpeedMPH +
-                    ", windDirection=" + windDirection +
-                    ", uvIndex=" + uvIndex +
-                    '}';
+        public void AddToEmbed(EmbedCreateSpec spec) {
+            spec.addField(Language.get("weather.summary.label"), icon.unicode + " " + summary, true);
+            spec.addField(Language.get("weather.temperature.label"), Language.get("weather.temperature.value", temperatureC, temperatureF), true);
+            spec.addField(Language.get("weather.precipitation.label"), Language.get("weather.precipitation.value", precipitationProb), true);
+            spec.addField(Language.get("weather.humidity.label"), Language.get("weather.humidity.value", humidity), true);
+            spec.addField(Language.get("weather.pressure.label"), Language.get("weather.pressure.value", pressure), true);
+            spec.addField(Language.get("weather.wind_speed.label"), Language.get("weather.wind_speed.value", windSpeedMPS, windSpeedMPH), true);
+            spec.addField(Language.get("weather.wind_direction.label"), Language.get("weather.wind_direction.value." + windDirection.code), true);
+            spec.addField(Language.get("weather.uv_index.label"), Language.get("weather.uv_index.value", uvIndex), true);
+            spec.setTimestamp(datetime.toInstant());
+        }
+    }
+
+    public static class DailyWeatherResponse implements IWeatherResponse {
+        public Date datetime;
+        public String summary;
+        public int offset;
+        public WeatherIcon icon;
+        public double precipitationProb;
+        public double temperatureLowC;
+        public double temperatureHighC;
+        public Date temperatureLowTime;
+        public double temperatureLowF;
+        public double temperatureHighF;
+        public Date temperatureHighTime;
+        public double humidity;
+        public double pressure;
+        public double windSpeedMPS;
+        public double windSpeedMPH;
+        public WindDirection windDirection;
+        public int uvIndex;
+        public Date sunriseTime;
+        public Date sunsetTime;
+
+        @Override
+        public void AddToEmbed(EmbedCreateSpec spec) {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            timeFormat.setTimeZone(TimeZone.getTimeZone("GMT" + (offset >= 0 ? "+" : "") + offset));
+            String lowTime = timeFormat.format(temperatureLowTime);
+            String highTime = timeFormat.format(temperatureHighTime);
+            String sunrise = timeFormat.format(sunriseTime);
+            String sunset = timeFormat.format(sunsetTime);
+
+            spec.addField(Language.get("weather.summary.label"), icon.unicode + " " + summary, true);
+            spec.addField(Language.get("weather.temperature_low.label"), Language.get("weather.temperature_low.value", temperatureLowC, temperatureLowF, lowTime), true);
+            spec.addField(Language.get("weather.temperature_high.label"), Language.get("weather.temperature_high.value", temperatureHighC, temperatureHighF, highTime), true);
+            spec.addField(Language.get("weather.sunrise_time.label"), Language.get("weather.sunrise_time.value", sunrise), true);
+            spec.addField(Language.get("weather.sunset_time.label"), Language.get("weather.sunset_time.value", sunset), true);
+            spec.addField(Language.get("weather.precipitation.label"), Language.get("weather.precipitation.value", precipitationProb), true);
+            spec.addField(Language.get("weather.humidity.label"), Language.get("weather.humidity.value", humidity), true);
+            spec.addField(Language.get("weather.pressure.label"), Language.get("weather.pressure.value", pressure), true);
+            spec.addField(Language.get("weather.wind_speed.label"), Language.get("weather.wind_speed.value", windSpeedMPS, windSpeedMPH), true);
+            spec.addField(Language.get("weather.wind_direction.label"), Language.get("weather.wind_direction.value." + windDirection.code), true);
+            spec.addField(Language.get("weather.uv_index.label"), Language.get("weather.uv_index.value", uvIndex), true);
+            spec.setTimestamp(datetime.toInstant());
         }
     }
 

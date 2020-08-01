@@ -1,7 +1,6 @@
 package net.polarizedions.polarizedbot.modules.impl;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.polarizedions.polarizedbot.Language;
 import net.polarizedions.polarizedbot.api.DarkSky;
 import net.polarizedions.polarizedbot.api.MapBox;
@@ -31,29 +30,41 @@ public class Weather implements IModule {
         @Override
         public void register(CommandDispatcher<MessageSource> dispatcher) {
             dispatcher.register(
-                    literal("w").then(
-                            argument("l", greedyString())
-                            .executes(c -> this.weather(c.getSource(), getString(c, "l")))
-                    )
+                    literal("w")
+                        .then(
+                                argument("loc", greedyString())
+                                .executes(c -> this.weather(c.getSource(), getString(c, "loc")))
+                        )
             );
             
             dispatcher.register(
-                    literal("weather").then(
-                            argument("l", greedyString())
-                            .executes(c -> this.weather(c.getSource(), getString(c, "l")))
-                    )
+                    literal("weather")
+                        .then(
+                                argument("loc", greedyString())
+                                .executes(c -> this.weather(c.getSource(), getString(c, "loc")))
+                        )
             );
         }
 
+
         private int weather(MessageSource source, String location) {
+            DarkSky.ForecastType forecastType = DarkSky.ForecastType.CURRENT;
+            for (DarkSky.ForecastType type : DarkSky.ForecastType.values()) {
+                if (location.startsWith(type.inputStr)) {
+                    location = location.substring(type.inputStr.length());
+                    forecastType = type;
+                }
+            }
+
             MapBox.Location loc;
-            DarkSky.WeatherResponse weather;
+            DarkSky.IWeatherResponse weather;
             try {
                 loc = MapBox.getLocation(location);
             } catch (MapBox.MapBoxException e) {
+                String finalLocation = location;
                 source.replyEmbed(spec -> {
                     spec.setTitle(Language.get("weather.error_title"));
-                    spec.addField(Language.get("weather.error"), Language.get("weather.error_location", location), false);
+                    spec.addField(Language.get("weather.error"), Language.get("weather.error_location", finalLocation), false);
 
                     spec.setColor(Colors.BAD);
                     spec.setTimestamp(Instant.now());
@@ -62,7 +73,7 @@ public class Weather implements IModule {
             }
 
             try {
-                weather = DarkSky.getWeather(loc.coords);
+                weather = DarkSky.getWeather(loc.coords, forecastType);
             } catch (DarkSky.DarkSkyException e) {
                 source.replyEmbed(spec -> {
                     spec.setTitle(Language.get("weather.error_title"));
@@ -74,21 +85,14 @@ public class Weather implements IModule {
                 return 1;
             }
 
+            DarkSky.ForecastType finalForecastType = forecastType;
             source.replyEmbed(spec -> {
-                spec.setTitle(Language.get("weather.title", loc.name));
+                spec.setTitle(Language.get("weather.title." + finalForecastType.inputStr, loc.name));
 
-                spec.addField(Language.get("weather.summary.label"), weather.icon.unicode + " " + weather.summary, true);
-                spec.addField(Language.get("weather.temperature.label"), Language.get("weather.temperature.value", weather.temperatureC, weather.temperatureF), true);
-                spec.addField(Language.get("weather.precipitation.label"), Language.get("weather.precipitation.value", weather.precipitationProb), true);
-                spec.addField(Language.get("weather.humidity.label"), Language.get("weather.humidity.value", weather.humidity), true);
-                spec.addField(Language.get("weather.pressure.label"), Language.get("weather.pressure.value", weather.pressure), true);
-                spec.addField(Language.get("weather.wind_speed.label"), Language.get("weather.wind_speed.value", weather.windSpeedMPS, weather.windSpeedMPH), true);
-                spec.addField(Language.get("weather.wind_direction.label"), Language.get("weather.wind_direction.value." + weather.windDirection.code), true);
-                spec.addField(Language.get("weather.uv_index.label"), Language.get("weather.uv_index.value", weather.uvIndex), true);
+                weather.AddToEmbed(spec);
 
                 spec.setColor(Colors.INFO);
                 spec.setFooter("Powered by MapBox.com & DarkSky.net", null);
-                spec.setTimestamp(weather.datetime.toInstant());
             });
             return 1;
         }

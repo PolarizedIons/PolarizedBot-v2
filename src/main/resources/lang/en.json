@@ -97,18 +97,38 @@
         "error": "Error: ",
         "error_location": "Error getting location data for %s",
         "error_weather": "Error getting weather for %s",
-        "title": "Weather for: %s",
+        "title": {
+            "current": "Current weather for: %s",
+            "today": "Today's weather for: %s",
+            "tomorrow": "Tomorrow's weather for: %s"
+        },
         "summary": {
             "label": "Summary:",
             "value": ""
         },
         "precipitation": {
             "label": "Precipitation:",
-            "value": "%s%%"
+            "value": "%.2f%%"
         },
         "temperature": {
             "label": "Temperature:",
             "value": "%s˚C / %s˚F"
+        },
+        "temperature_low": {
+            "label": "Temperature Low:",
+            "value": "%s˚C / %s˚F @ %s"
+        },
+        "temperature_high": {
+            "label": "Temperature High:",
+            "value": "%s˚C / %s˚F @ %s"
+        },
+        "sunrise_time":  {
+            "label": "Sunrise at:",
+            "value": "%s"
+        },
+        "sunset_time":  {
+            "label": "Sunset at:",
+            "value": "%s"
         },
         "humidity": {
             "label": "Humidity:",
