@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.mojang:brigadier
+    versions:
+    - "> 1.0.17, < 1.1"
+  - dependency-name: com.discord4j:discord4j-core
+    versions:
+    - 3.1.3
+    - 3.1.4
+  - dependency-name: org.apache.logging.log4j:log4j-slf4j-impl
+    versions:
+    - 2.14.0
+  - dependency-name: org.apache.logging.log4j:log4j-api
+    versions:
+    - 2.14.0
